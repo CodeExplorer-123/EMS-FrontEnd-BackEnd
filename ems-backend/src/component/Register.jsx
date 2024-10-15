@@ -2,20 +2,24 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { createEmployee } from '../features/employeeDetailSlice';
+import axios from 'axios';
 
 const Register = () => {
     const dispatch = useDispatch();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [roles,setRoles] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createEmployee({ firstName, lastName, email, password }));
+      dispatch(createEmployee({ firstName, lastName, email,roles, password }));
+    
         setFirstName('');
         setLastName('');
         setEmail('');
+        setRoles('');
         setPassword('');
     };
 
@@ -41,6 +45,13 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
+                required
+            />
+             <input
+                type="text"
+                value={roles}
+                onChange={(e) => setRoles(e.target.value)}
+                placeholder="Role"
                 required
             />
             <input

@@ -1,36 +1,35 @@
-nav {
+/* Navbar.css */
+
+.navbar {
   background-color: #333;
-  padding: 10px;
+  padding: 1rem;
 }
 
-nav ul {
+.nav-links {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
   display: flex;
   justify-content: space-around;
 }
 
-nav li {
-  display: inline;
+.nav-links li {
+  color: white;
 }
 
-nav a {
+.nav-links li a {
   color: white;
   text-decoration: none;
-  padding: 10px 15px;
-  transition: background-color 0.3s, color 0.3s;
+  padding: 0.5rem 1rem;
 }
 
-nav a:hover {
+.nav-links li a:hover {
   background-color: #555;
-  color: white;
+  border-radius: 5px;
 }
 
-nav a.active {
-  background-color: #007bff;
-  color: white;
+.logout {
+  cursor: pointer;
 }
+
 
 table {
   width: 100%;
@@ -66,3 +65,4 @@ button {
 button:hover {
   background-color: #d32f2f;
 }
+

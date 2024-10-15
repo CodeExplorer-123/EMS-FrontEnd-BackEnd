@@ -26,7 +26,7 @@ const AllEmployee = () => {
     
     const handleDelete = (id) => {
         dispatch(deleteEmployee(id));
-    }
+    } 
 
     return (
         <div>
@@ -38,6 +38,7 @@ const AllEmployee = () => {
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
+                        <th>Role</th>
                         <th>Actions</th> {/* Added header for actions */}
                     </tr>
                 </thead>
@@ -45,8 +46,9 @@ const AllEmployee = () => {
                     {employees.map((employee) => (
                         <tr key={employee.id}>
                             <td>{employee.firstName}</td> 
-                            <td>{employee.lastName}</td>   
-                            <td>{employee.email}</td>         
+                            <td>{employee.lastName}</td> 
+                            <td>{employee.email}</td>
+                            <td>{employee.roles}</td>           
                             <td>
                                 <button onClick={() => handleView(employee.id)}>View</button>
                             </td>

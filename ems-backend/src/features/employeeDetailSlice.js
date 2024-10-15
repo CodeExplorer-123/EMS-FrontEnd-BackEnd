@@ -1,23 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
+import axiosInstance from "../Inceptors/EmployeeInterceptor";
 
-const API_URL = 'https://66fb9bb78583ac93b40c6797.mockapi.io/crud/crud';
+const API_URL = 'http://localhost:8081/api/employee';
 
 // Create employee
-export const createEmployee = createAsyncThunk('op/createEmployee', async (employee) => {
-    try {
-        const response = await axios.post(API_URL, employee);
+export const createEmployee = createAsyncThunk("employee/createEmployee", async (employee) => {
+     try {
+        const response = await axios.post(`${API_URL}/create`, employee);
+        console.log('employee created', response.data);
         return response.data;
-    } catch (error) {
-        const errorMessage = error.response?.data?.message || 'Error creating employee';
-        throw new Error(errorMessage);
-    }
+     } catch (error) {
+         const errorMessage = error.response?.data?.message || 'Error creating employee';
+         throw new Error(errorMessage);
+     }
 });
 
 // Get employees
 export const getEmployees = createAsyncThunk('op/getEmployees', async () => {
     try {
-        const response = await axios.get(API_URL);
+        const response = await axios.get(`${API_URL}/get`);
         return response.data;
     } catch (error) {
         const errorMessage = error.response?.data?.message || 'Error fetching employees';
@@ -28,7 +30,7 @@ export const getEmployees = createAsyncThunk('op/getEmployees', async () => {
 // Get employee by ID
 export const getEmployeeById = createAsyncThunk('op/getEmployeeById', async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/${id}`);
+        const response = await axios.get(`${API_URL}/get/${id}`);
         return response.data;
     } catch (error) {
          const errorMessage = error.response?.data?.message || 'Error fetching employee';
@@ -50,8 +52,9 @@ export const updateEmployee = createAsyncThunk('op/updateEmployee', async ({ id,
 
 // Delete employee
 export const deleteEmployee = createAsyncThunk('op/deleteEmployee', async (id) => {
+
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const response = await axiosInstance.delete(`${API_URL}/delete/${id}`);
         return response.data; 
     } catch (error) {
         const errorMessage = error.response?.data?.message || 'Error deleting employee';
@@ -60,18 +63,44 @@ export const deleteEmployee = createAsyncThunk('op/deleteEmployee', async (id) =
 });
 
 
+// Create login action
+export const loginEmployee = createAsyncThunk("auth/loginUser",async (authRequest) => {
+        try {
+            const response = await axios.post("http://localhost:8081/api/auth/login", authRequest);
+           localStorage.setItem("user", JSON.stringify(response.data));
+           return response.data; 
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || 'Error logging in';
+            throw new Error(errorMessage);
+        }
+    }
+);
+
+
 export const employeeDetail = createSlice({
     name: "employeeDetail",
     initialState: {
         employees: [],
         loading: false,
         error: null,
+        token:null,
     },
     extraReducers: (builder) => {
         builder
+            .addCase(loginEmployee.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(loginEmployee.fulfilled, (state, action) => {
+                state.loading = false;
+                state.employees=action.payload.employeeDto;
+                state.token=action.payload.token;
+            })
+            .addCase(loginEmployee.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
             .addCase(createEmployee.pending, (state) => {
                 state.loading = true;
-                state.error = null; // Clear previous errors
             })
             .addCase(createEmployee.fulfilled, (state, action) => {
                 state.loading = false;
@@ -79,7 +108,7 @@ export const employeeDetail = createSlice({
             })
             .addCase(createEmployee.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message; // Use action.error.message
+                state.error = action.error.message;
             })
              .addCase(getEmployees.pending, (state) => {
                 state.loading = true;
@@ -111,7 +140,7 @@ export const employeeDetail = createSlice({
             })
             .addCase(updateEmployee.fulfilled, (state, action) => {
                 state.loading = false;
-                state.employees.push(action.payload);
+                state.employees=action.payload;
             })
             .addCase(updateEmployee.rejected, (state, action) => {
                 state.loading = false;
@@ -123,10 +152,6 @@ export const employeeDetail = createSlice({
             })
             .addCase(deleteEmployee.fulfilled, (state, action) => {
                 state.loading = false;
-                // Optionally handle response message if needed
-                console.log(action.payload); // "employee deleted"
-                // Filter out the deleted employee from the state
-                state.employees = state.employees.filter(emp => emp.id !== action.meta.arg);
             })
             .addCase(deleteEmployee.rejected, (state, action) => {
                 state.loading = false;

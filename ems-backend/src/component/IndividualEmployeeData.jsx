@@ -24,6 +24,7 @@ const IndividualEmployeeData = () => {
             <p>First Name: {employees.firstName}</p>
             <p>Last Name: {employees.lastName}</p>
             <p>Email: {employees.email}</p>
+            <p>Roles: {employees.roles}</p>
         </div>
     );
 };

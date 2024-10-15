@@ -9,6 +9,7 @@ import AllEmployee from './component/AllEmployee';
 import IndividualEmployee from './component/IndividualEmployee';
 import IndividualEmployeeData from './component/IndividualEmployeeData';
 import UpdateEmployee from './component/UpdateEmployee';
+import Login from './component/Login';
 
 function App() {
     return (
@@ -19,7 +20,8 @@ function App() {
                 <Route path="/all-employee" element={<AllEmployee />} />
                 <Route path="/individual-employee" element={<IndividualEmployee />} />
                 <Route path="/individual-employee/:id" element={<IndividualEmployeeData />} />
-                 <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+                <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </BrowserRouter>
     );

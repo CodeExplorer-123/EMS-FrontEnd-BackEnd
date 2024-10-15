@@ -1,0 +1,31 @@
+
+
+.navbar {
+    background-color: #333;
+    padding: 1rem;
+}
+
+.nav-links {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-links li {
+    color: white;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+}
+
+.nav-links li a:hover {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+.logout {
+    cursor: pointer;
+}
